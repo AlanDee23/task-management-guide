@@ -503,7 +503,7 @@
             <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Мини-гайд: "Проверка задачи за 60 секунд"</h2>
             <div class="card p-8 bg-indigo-50 border-indigo-200">
                 <p class="text-gray-800 mb-6 text-xl font-medium text-center">Перед тем как приступить к задаче, задай себе 4 вопроса:</p>
-                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="grid md:grid-cols-2 gap-6 mb-8 justify-items-center"> <!-- Added justify-items-center -->
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-question-circle text-indigo-600 text-2xl"></i>
                         <span class="text-lg text-gray-700">1. Что нужно сделать?</span>
@@ -522,16 +522,16 @@
                     </div>
                 </div>
                 <p class="text-gray-800 mb-4 text-xl font-medium text-center">Если на любой вопрос нет ответа:</p>
-                <ul class="list-none space-y-3 text-gray-700"> <!-- Removed text-center -->
-                    <li class="flex items-center space-x-3"> <!-- Removed justify-center -->
+                <ul class="list-none space-y-3 text-gray-700">
+                    <li class="flex items-center space-x-3 justify-center"> <!-- Added justify-center -->
                         <i class="fas fa-comment-dots text-yellow-600 text-xl"></i>
                         <span class="text-lg">Ставлю уточняющий комментарий</span>
                     </li>
-                    <li class="flex items-center space-x-3">
+                    <li class="flex items-center space-x-3 justify-center"> <!-- Added justify-center -->
                         <i class="fas fa-handshake text-yellow-600 text-xl"></i>
                         <span class="text-lg">Фиксирую договоренности</span>
                     </li>
-                    <li class="flex items-center space-x-3">
+                    <li class="flex items-center space-x-3 justify-center"> <!-- Added justify-center -->
                         <i class="fas fa-play-circle text-yellow-600 text-xl"></i>
                         <span class="text-lg">Только после этого начинаю выполнение.</span>
                     </li>
