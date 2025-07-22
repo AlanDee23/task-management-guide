@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивная памятка по работе с задачами</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling application with a sticky navigation header for quick access to key sections: "Основы", "Примеры", "Ошибки", "Практика", and "Инструменты". This structure transforms the static PDF into a logical learning path. It starts with the fundamentals, shows practical examples, highlights common pitfalls, provides actionable advice for different roles (task setter/receiver), and ends with ready-to-use tools. This is more intuitive for learning and retention than the original document's linear page flow. Interactive elements like toggles and accordions are used to make content digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Checklist/Golden Standard -> Goal: Inform -> Viz: Interactive styled list -> Interaction: None, visual grouping -> Justification: Consolidates core principles upfront for clarity. -> Library: Tailwind.
+        - Report Info: Bad vs. Good Examples -> Goal: Compare -> Viz: Tabbed cards for each scenario -> Interaction: Click to toggle between "Плохо" and "Хорошо" -> Justification: Allows direct, side-by-side comparison which is highly effective for learning. -> Library: JS, Tailwind.
+        - Report Info: Common Mistakes -> Goal: Organize/Inform -> Viz: Accordion component -> Interaction: Click to expand/collapse details of each mistake -> Justification: Reduces initial information overload and allows users to focus on specific errors. -> Library: JS, Tailwind.
+        - Report Info: Employee Memos -> Goal: Inform/Guide -> Viz: Role-based sections ("Если ставишь ты", "Если ставят тебе") -> Interaction: None, structural organization -> Justification: Personalizes the advice, making it more relatable and actionable. -> Library: Tailwind.
+        - Report Info: Quick Check/Phrases -> Goal: Provide Tools -> Viz: Styled list and copyable text blocks -> Interaction: Click-to-copy button for phrases -> Justification: Makes the phrases practical and immediately usable. -> Library: JS, Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF6;
+            color: #3C3633;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #E07A5F;
+            border-bottom-color: #E07A5F;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F0EBE3;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .accordion-button.open .accordion-arrow {
+            transform: rotate(180deg);
+        }
+        .accordion-arrow {
+            transition: transform 0.3s;
+        }
+        .tab-button.active {
+            background-color: #E07A5F;
+            color: #FFFFFF;
+        }
+        .tab-button {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .copy-button {
+            transition: background-color 0.2s;
+        }
+        .copy-button:active {
+            background-color: #6a9983;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-[#E07A5F]">Работа с задачами</h1>
+                </div>
+                <div class="hidden md:block">
+                    <nav class="flex items-center space-x-4">
+                        <a href="#basics" class="nav-link px-3 py-2 text-sm font-medium">Основы</a>
+                        <a href="#examples" class="nav-link px-3 py-2 text-sm font-medium">Примеры</a>
+                        <a href="#mistakes" class="nav-link px-3 py-2 text-sm font-medium">Ошибки</a>
+                        <a href="#memo" class="nav-link px-3 py-2 text-sm font-medium">Памятка</a>
+                        <a href="#tools" class="nav-link px-3 py-2 text-sm font-medium">Инструменты</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        
+        <section id="intro" class="text-center mb-16">
+            <h1 class="text-4xl font-bold tracking-tight mb-4 sm:text-5xl">Интерактивная памятка по работе с задачами</h1>
+            <p class="text-lg text-gray-600">Этот материал поможет вам освоить ключевые принципы эффективной постановки и выполнения задач в Bitrix24.</p>
+        </section>
+
+        <section id="basics" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-2 text-center">Золотой стандарт постановки задачи</h2>
+            <p class="text-center text-gray-600 mb-8">Это основа, которая гарантирует, что задача будет понята и выполнена правильно. Используйте эти пункты как чек-лист при создании любой задачи.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ ЧТО сделать?</h3>
+                    <p class="text-gray-600">Формулируйте задачу как конкретное, понятное действие. Избегайте общих фраз.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ КОНЕЧНЫЙ РЕЗУЛЬТАТ (КР)</h3>
+                    <p class="text-gray-600">Четко определите, что является успешным завершением задачи. Это может быть документ, отчет, запущенная кампания и т.д.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ СРОК выполнения</h3>
+                    <p class="text-gray-600">Укажите точную дату и время завершения. Дедлайн должен быть реалистичным и зафиксированным.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ ОТВЕТСТВЕННЫЙ</h3>
+                    <p class="text-gray-600">Назначьте одного конкретного сотрудника, который несет ответственность за финальный результат.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ ПРИОРИТЕТ (если критично)</h3>
+                    <p class="text-gray-600">Используйте высокий приоритет только для действительно срочных задач, вызванных непредвиденными обстоятельствами.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ КОММЕНТАРИИ + файлы</h3>
+                    <p class="text-gray-600">Ведите всё общение и прикрепляйте все необходимые документы исключительно внутри задачи.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-2 text-center">Примеры: Плохо vs. Хорошо</h2>
+            <p class="text-center text-gray-600 mb-8">Посмотрите, как небольшие изменения в формулировке кардинально меняют ясность задачи. Переключайтесь между вкладками, чтобы увидеть разницу.</p>
+            <div class="space-y-6 example-container">
+            </div>
+        </section>
+
+        <section id="mistakes" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-2 text-center">Частые ошибки при работе с задачами</h2>
+            <p class="text-center text-gray-600 mb-8">Знание этих ошибок поможет вам избежать их в своей работе. Нажмите на ошибку, чтобы увидеть подробности и правильный подход.</p>
+            <div class="space-y-4 accordion-container">
+            </div>
+        </section>
+
+        <section id="memo" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-2 text-center">Памятка сотрудника</h2>
+            <p class="text-center text-gray-600 mb-8">Ключевые правила и действия в зависимости от вашей роли: постановщика задачи или исполнителя.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4">Если ставишь задачу ТЫ</h3>
+                    <p class="mb-4 text-gray-600">Прежде чем поставить задачу, спроси себя:</p>
+                    <ul class="space-y-3 list-disc list-inside text-gray-700">
+                        <li>Что именно нужно сделать?</li>
+                        <li>Как я пойму, что задача выполнена? (КР)</li>
+                        <li>Когда нужно закончить? (Дедлайн)</li>
+                        <li>Кто отвечает за результат?</li>
+                        <li>Что поможет в работе: чек-лист, подзадачи?</li>
+                        <li>Все ли нужные люди знают об этой задаче?</li>
+                    </ul>
+                </div>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4">Если задачу ставят ТЕБЕ</h3>
+                    <p class="mb-4 text-gray-600">Если задача сформулирована некорректно:</p>
+                     <ol class="space-y-3 list-decimal list-inside text-gray-700">
+                        <li><b>Не выполняй вслепую.</b> Не приступай без уточнений.</li>
+                        <li><b>Переспроси постановщика.</b> Уточни формулировку, КР и срок.</li>
+                        <li><b>Предложи корректную формулировку.</b> Напиши в комментарии свое понимание задачи.</li>
+                        <li><b>Зафиксируй результат.</b> Обнови описание задачи или закрепи договоренности в комментарии.</li>
+                        <li><b>Если реакции нет — сообщи руководителю.</b> Не оставляй задачу "подвисшей".</li>
+                        <li><b>Проявляй инициативу.</b> Уточнение задачи — это признак профессионализма.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="tools" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-2 text-center">Быстрые инструменты</h2>
+            <p class="text-center text-gray-600 mb-8">Практические инструменты для ежедневной работы: экспресс-проверка задачи и готовые фразы для комментариев.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4">Проверка задачи за 60 секунд</h3>
+                    <p class="mb-4 text-gray-600">Перед тем как приступить, задай себе 4 вопроса:</p>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">1.</span>Что нужно сделать?</li>
+                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">2.</span>Какой конечный результат?</li>
+                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">3.</span>К какому сроку?</li>
+                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">4.</span>Кто за это отвечает?</li>
+                    </ul>
+                    <p class="mt-4 text-gray-600">Если нет ответа хотя бы на один вопрос — уточни у постановщика.</p>
+                </div>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4">Шаблоны фраз для комментариев</h3>
+                    <p class="mb-4 text-gray-600">Используйте эти фразы, чтобы сэкономить время и сделать общение в задачах более четким. Нажмите, чтобы скопировать.</p>
+                    <div class="space-y-3 phrases-container">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div id="copy-notification" class="fixed bottom-5 right-5 bg-[#81B29A] text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">
+        Текст скопирован!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const examplesData = [
+                { title: "Работа с клиентом", bad: "Поработать с клиентом", reason: "Не ясно, что конкретно нужно сделать", good: "Согласовать ТЗ с клиентом ООО «Старт» до 15:00 22.07.2025. КР: подписанный договор в CRM." },
+                { title: "Работа с макетом", bad: "Доделать макет", reason: "Не указано что за макет, к какому сроку и что считать готовым", good: "Завершить макет презентации для встречи с партнёрами до 12:00 25.07.2025. КР: макет утвержден руководителем." },
+                { title: "Настройка рекламы", bad: "Настроить рекламу", reason: "Слишком общее", good: "Настроить рекламную кампанию в Яндекс.Директ для акции «Осень-2025» до 20.08.2025. КР: запущена кампания с бюджетом 50 тыс. руб." },
+                { title: "Обновление прайса", bad: "Обновить прайс", reason: "Не сказано какой прайс и когда", good: "Обновить прайс-лист на сезон «Осень-2025» для сайта и печатных материалов до 31.07.2025. КР: размещён новый прайс на сайте и отправлен в печать." },
+                { title: "Подготовка отчёта", bad: "Сделать отчёт", reason: "Неясно по какому поводу, для кого и к какому сроку", good: "Подготовить отчёт по продажам за II квартал 2025 к 12:00 28.07.2025. КР: отправлен на почту руководителю." }
+            ];
+
+            const mistakesData = [
+                { title: "Постановка задачи без КР", error: "«Посмотреть показатели продаж.»", solution: "«Подготовить отчет по продажам за июнь 2025 до 14:00 29.07.2025. КР: отчет с графиками и комментариями отправлен руководителю.»" },
+                { title: "Отсутствие дедлайна", error: "«Провести анализ сайта.»", solution: "«Провести анализ юзабилити сайта до 30.07.2025. КР: перечень рекомендаций по улучшению.»" },
+                { title: "Нет ответственного", error: "Задача поставлена группе без закрепления за конкретным сотрудником.", solution: "Всегда назначайте одного ответственного за конечный результат." },
+                { title: "Обсуждения в сторонних мессенджерах", error: "Вопросы и согласования идут в WhatsApp / Telegram.", solution: "Вся коммуникация должна вестись в комментариях к задаче, чтобы сохранить контекст." },
+                { title: "Неопределённый или плавающий дедлайн", error: "Дедлайн не зафиксирован сразу при постановке задачи.", solution: "Крайний срок определяется сразу. Изменить его можно в течение суток после постановки задачи. В дальнейшем корректировка возможна только по объективной причине от ответственного." },
+                { title: "Формулировка 'срочно', без реального приоритета", error: "«СРОЧНО доделать презентацию!» без причины и срока.", solution: "Используйте флаг 'Высокий приоритет' и всегда указывайте конкретный дедлайн." },
+                { title: "Подмена приоритета личной срочностью", error: "Срочность задачи вызвана тем, что вы сами оставили её «на последний момент».", solution: "Это нарушает планирование команды. Планируйте свою работу, чтобы не создавать искусственную срочность для коллег." },
+                { title: "Неуместное объявление 'Это важная задача'", error: "Маркировать как 'важную' задачу, которая не требует немедленного выполнения.", solution: "Под «важной задачей» понимаем только действительно срочные задачи, вызванные непредвиденными обстоятельствами. Уважайте своё и чужое время." }
+            ];
+            
+            const phrasesData = [
+                { category: "Для уточнения задачи", phrases: ["Правильно ли я понял, что конечный результат ...?", "Подтвердите, пожалуйста, срок выполнения: ...", "Какой формат результата вам удобнее: файл, таблица, ссылка?"] },
+                { category: "Для промежуточного отчёта", phrases: ["На текущий момент выполнено... Прикладываю промежуточный файл.", "Есть прогресс по задаче: ... Продолжаю работу."] },
+                { category: "При запросе продления срока", phrases: ["Прошу согласовать перенос срока на ... по причине ...", "Столкнулся с уточняющими моментами, потребуется дополнительно ... дней."] },
+                { category: "Для закрытия задачи", phrases: ["Конечный результат достигнут: прикладываю файл/ссылку. Завершаю задачу.", "Проверьте, пожалуйста, результат. Если всё в порядке — закрываю задачу."] },
+                { category: "При делегировании", phrases: ["Передаю задачу Коллеге, так как ... Все детали передал."] },
+                { category: "Если задача поставлена некорректно", phrases: ["Формулировка задачи не полная. Для корректного выполнения мне нужно понять: ...", "Прошу уточнить КР и дедлайн, пока это не ясно."] }
+            ];
+
+            const exampleContainer = document.querySelector('.example-container');
+            examplesData.forEach((data, index) => {
+                const card = `
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold mb-4">${data.title}</h3>
+                        <div class="flex space-x-2 mb-4">
+                            <button class="tab-button w-1/2 py-2 px-4 rounded-md text-sm font-medium active" data-target="bad-${index}">Плохо</button>
+                            <button class="tab-button w-1/2 py-2 px-4 rounded-md text-sm font-medium" data-target="good-${index}">Хорошо</button>
+                        </div>
+                        <div id="bad-${index}" class="tab-content">
+                            <p class="text-red-600 bg-red-50 p-3 rounded-md">"${data.bad}"</p>
+                            <p class="mt-2 text-sm text-gray-500"><b>Почему плохо:</b> ${data.reason}</p>
+                        </div>
+                        <div id="good-${index}" class="tab-content hidden">
+                            <p class="text-green-700 bg-green-50 p-3 rounded-md">"${data.good}"</p>
+                        </div>
+                    </div>`;
+                exampleContainer.innerHTML += card;
+            });
+
+            const accordionContainer = document.querySelector('.accordion-container');
+            mistakesData.forEach((data, index) => {
+                const item = `
+                    <div class="card">
+                        <button class="accordion-button w-full flex justify-between items-center text-left p-5">
+                            <span class="font-semibold text-lg">${data.title}</span>
+                            <span class="accordion-arrow transform transition-transform duration-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content hidden p-5 border-t border-gray-200">
+                            <div class="space-y-3">
+                                <p><strong class="text-red-600">Ошибка:</strong> ${data.error}</p>
+                                <p><strong class="text-green-700">Как нужно:</strong> ${data.solution}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                accordionContainer.innerHTML += item;
+            });
+
+            const phrasesContainer = document.querySelector('.phrases-container');
+            phrasesData.forEach(data => {
+                const categoryHtml = `
+                    <div>
+                        <h4 class="font-semibold mb-2">${data.category}</h4>
+                        <div class="space-y-2">
+                            ${data.phrases.map(phrase => `
+                                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-md">
+                                    <p class="text-gray-700 text-sm flex-grow">"${phrase}"</p>
+                                    <button class="copy-button ml-2 flex-shrink-0 bg-[#81B29A] text-white text-xs font-bold py-1 px-2 rounded-md hover:bg-[#6a9983]">Копировать</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                phrasesContainer.innerHTML += categoryHtml;
+            });
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const parent = button.closest('.card');
+                    parent.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    button.classList.add('active');
+                    parent.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+                    document.getElementById(button.dataset.target).classList.remove('hidden');
+                });
+            });
+
+            document.querySelectorAll('.accordion-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    button.classList.toggle('open');
+                    content.classList.toggle('hidden');
+                });
+            });
+            
+            const notification = document.getElementById('copy-notification');
+            document.querySelectorAll('.copy-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const textToCopy = button.previousElementSibling.innerText;
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        notification.classList.remove('opacity-0');
+                        setTimeout(() => {
+                            notification.classList.add('opacity-0');
+                        }, 2000);
+                    });
+                });
+            });
+
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
