@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: A thematic, single-page scrolling application with a sticky navigation header for quick access to key sections: "Основы", "Примеры", "Ошибки", "Практика", and "Инструменты". This structure transforms the static PDF into a logical learning path. It starts with the fundamentals, shows practical examples, highlights common pitfalls, provides actionable advice for different roles (task setter/receiver), and ends with ready-to-use tools. This is more intuitive for learning and retention than the original document's linear page flow. Interactive elements like toggles and accordions are used to make content digestible and engaging. -->
+    <!-- Chosen Palette: Corporate (F5C945, 1E1B20) -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling application with a sticky navigation header for quick access to key sections: "Основы", "Примеры", "Ошибки", "Памятка", and "Инструменты". This structure transforms the static PDF into a logical learning path. It starts with the fundamentals, shows practical examples, highlights common pitfalls, provides actionable advice for different roles (task setter/receiver), and ends with ready-to-use tools. This is more intuitive for learning and retention than the original document's linear page flow. Interactive elements like toggles and accordions are used to make content digestible and engaging. -->
     <!-- Visualization & Content Choices: 
         - Report Info: Checklist/Golden Standard -> Goal: Inform -> Viz: Interactive styled list -> Interaction: None, visual grouping -> Justification: Consolidates core principles upfront for clarity. -> Library: Tailwind.
         - Report Info: Bad vs. Good Examples -> Goal: Compare -> Viz: Tabbed cards for each scenario -> Interaction: Click to toggle between "Плохо" and "Хорошо" -> Justification: Allows direct, side-by-side comparison which is highly effective for learning. -> Library: JS, Tailwind.
@@ -21,20 +21,20 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FDFBF6;
-            color: #3C3633;
+            background-color: #F8F8F8; /* Very light gray background */
+            color: #1E1B20; /* Corporate dark gray for main text */
         }
         .nav-link {
             transition: color 0.3s, border-bottom-color 0.3s;
             border-bottom: 2px solid transparent;
         }
         .nav-link:hover, .nav-link.active {
-            color: #E07A5F;
-            border-bottom-color: #E07A5F;
+            color: #F5C945; /* Corporate yellow for active/hover nav links */
+            border-bottom-color: #F5C945;
         }
         .card {
             background-color: #FFFFFF;
-            border: 1px solid #F0EBE3;
+            border: 1px solid #EAEAEA; /* Light gray border for cards */
             border-radius: 0.75rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             transition: transform 0.3s, box-shadow 0.3s;
@@ -50,8 +50,8 @@
             transition: transform 0.3s;
         }
         .tab-button.active {
-            background-color: #E07A5F;
-            color: #FFFFFF;
+            background-color: #F5C945; /* Corporate yellow for active tab button background */
+            color: #FFFFFF; /* White text on active tab */
         }
         .tab-button {
             transition: background-color 0.3s, color 0.3s;
@@ -60,7 +60,7 @@
             transition: background-color 0.2s;
         }
         .copy-button:active {
-            background-color: #6a9983;
+            background-color: #0F0E10; /* Slightly darker dark gray for active copy button */
         }
     </style>
 </head>
@@ -69,271 +69,503 @@
     <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
-                    <h1 class="text-xl font-bold text-[#E07A5F]">Работа с задачами</h1>
+                <div class="flex-shrink-0 flex items-center space-x-2">
+                    <span class="text-2xl font-bold text-gray-800">Памятка по задачам</span>
                 </div>
-                <div class="hidden md:block">
-                    <nav class="flex items-center space-x-4">
-                        <a href="#basics" class="nav-link px-3 py-2 text-sm font-medium">Основы</a>
-                        <a href="#examples" class="nav-link px-3 py-2 text-sm font-medium">Примеры</a>
-                        <a href="#mistakes" class="nav-link px-3 py-2 text-sm font-medium">Ошибки</a>
-                        <a href="#memo" class="nav-link px-3 py-2 text-sm font-medium">Памятка</a>
-                        <a href="#tools" class="nav-link px-3 py-2 text-sm font-medium">Инструменты</a>
-                    </nav>
-                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#basics" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Основы</a>
+                    <a href="#examples" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Примеры</a>
+                    <a href="#mistakes" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Ошибки</a>
+                    <a href="#memo" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Памятка</a>
+                    <a href="#tools" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Инструменты</a>
+                </nav>
             </div>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        
-        <section id="intro" class="text-center mb-16">
-            <h1 class="text-4xl font-bold tracking-tight mb-4 sm:text-5xl">Интерактивная памятка по работе с задачами</h1>
-            <p class="text-lg text-gray-600">Этот материал поможет вам освоить ключевые принципы эффективной постановки и выполнения задач в Bitrix24.</p>
-        </section>
+    <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
 
-        <section id="basics" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold mb-2 text-center">Золотой стандарт постановки задачи</h2>
-            <p class="text-center text-gray-600 mb-8">Это основа, которая гарантирует, что задача будет понята и выполнена правильно. Используйте эти пункты как чек-лист при создании любой задачи.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Section: Основы -->
+        <section id="basics" class="mb-16">
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Основы корректной постановки задач</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="card p-6">
-                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ ЧТО сделать?</h3>
-                    <p class="text-gray-600">Формулируйте задачу как конкретное, понятное действие. Избегайте общих фраз.</p>
+                    <h3 class="text-xl font-semibold mb-3">1. Что сделать?</h3>
+                    <p class="text-gray-700">Формулируйте задачу как конкретное действие.</p>
                 </div>
                 <div class="card p-6">
-                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ КОНЕЧНЫЙ РЕЗУЛЬТАТ (КР)</h3>
-                    <p class="text-gray-600">Четко определите, что является успешным завершением задачи. Это может быть документ, отчет, запущенная кампания и т.д.</p>
+                    <h3 class="text-xl font-semibold mb-3">2. Конечный Результат (КР)</h3>
+                    <p class="text-gray-700">Определите, что является результатом задачи. Что должно быть получено в итоге?</p>
                 </div>
                 <div class="card p-6">
-                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ СРОК выполнения</h3>
-                    <p class="text-gray-600">Укажите точную дату и время завершения. Дедлайн должен быть реалистичным и зафиксированным.</p>
+                    <h3 class="text-xl font-semibold mb-3">3. Дедлайн</h3>
+                    <p class="text-gray-700">Укажите точную дату и время завершения задачи.</p>
                 </div>
                 <div class="card p-6">
-                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ ОТВЕТСТВЕННЫЙ</h3>
-                    <p class="text-gray-600">Назначьте одного конкретного сотрудника, который несет ответственность за финальный результат.</p>
+                    <h3 class="text-xl font-semibold mb-3">4. Ответственный</h3>
+                    <p class="text-gray-700">Назначьте одного сотрудника, который будет нести ответственность за выполнение.</p>
                 </div>
                 <div class="card p-6">
-                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ ПРИОРИТЕТ (если критично)</h3>
-                    <p class="text-gray-600">Используйте высокий приоритет только для действительно срочных задач, вызванных непредвиденными обстоятельствами.</p>
+                    <h3 class="text-xl font-semibold mb-3">5. Соисполнители / Наблюдатели</h3>
+                    <p class="text-gray-700">Добавьте при необходимости. Наблюдатели всегда руководители.</p>
                 </div>
                 <div class="card p-6">
-                    <h3 class="font-bold text-lg mb-2 text-[#E07A5F]">☑ КОММЕНТАРИИ + файлы</h3>
-                    <p class="text-gray-600">Ведите всё общение и прикрепляйте все необходимые документы исключительно внутри задачи.</p>
+                    <h3 class="text-xl font-semibold mb-3">6. Чек-лист / Подзадачи</h3>
+                    <p class="text-gray-700">Структурируйте шаги внутри задачи для ясности процесса.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-3">7. Приоритет</h3>
+                    <p class="text-gray-700">Проставьте отметку, если задача критичная и требует немедленного внимания.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold mb-3">8. Комментарии и файлы</h3>
+                    <p class="text-gray-700">Ведите всё общение по задаче только в комментариях и прикрепляйте все необходимые документы.</p>
                 </div>
             </div>
         </section>
 
-        <section id="examples" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold mb-2 text-center">Примеры: Плохо vs. Хорошо</h2>
-            <p class="text-center text-gray-600 mb-8">Посмотрите, как небольшие изменения в формулировке кардинально меняют ясность задачи. Переключайтесь между вкладками, чтобы увидеть разницу.</p>
-            <div class="space-y-6 example-container">
-            </div>
-        </section>
-
-        <section id="mistakes" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold mb-2 text-center">Частые ошибки при работе с задачами</h2>
-            <p class="text-center text-gray-600 mb-8">Знание этих ошибок поможет вам избежать их в своей работе. Нажмите на ошибку, чтобы увидеть подробности и правильный подход.</p>
-            <div class="space-y-4 accordion-container">
-            </div>
-        </section>
-
-        <section id="memo" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold mb-2 text-center">Памятка сотрудника</h2>
-            <p class="text-center text-gray-600 mb-8">Ключевые правила и действия в зависимости от вашей роли: постановщика задачи или исполнителя.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="card p-8">
-                    <h3 class="text-2xl font-bold mb-4">Если ставишь задачу ТЫ</h3>
-                    <p class="mb-4 text-gray-600">Прежде чем поставить задачу, спроси себя:</p>
-                    <ul class="space-y-3 list-disc list-inside text-gray-700">
-                        <li>Что именно нужно сделать?</li>
-                        <li>Как я пойму, что задача выполнена? (КР)</li>
-                        <li>Когда нужно закончить? (Дедлайн)</li>
-                        <li>Кто отвечает за результат?</li>
-                        <li>Что поможет в работе: чек-лист, подзадачи?</li>
-                        <li>Все ли нужные люди знают об этой задаче?</li>
-                    </ul>
+        <!-- Section: Примеры -->
+        <section id="examples" class="mb-16">
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Примеры формулировок: «Плохо – Хорошо»</h2>
+            <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Example 1 -->
+                <div class="card p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Работа с клиентом</h3>
+                    <div class="flex justify-center mb-4">
+                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-1">Плохо</button>
+                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-1">Хорошо</button>
+                    </div>
+                    <div id="bad-1" class="tab-content">
+                        <p class="text-red-600 font-bold text-lg mb-2">Поработать с клиентом</p>
+                        <p class="text-gray-700"><strong>Почему плохо:</strong> Не ясно, что конкретно нужно сделать.</p>
+                    </div>
+                    <div id="good-1" class="tab-content hidden">
+                        <p class="text-green-600 font-bold text-lg mb-2">Согласовать ТЗ с клиентом ООО «Старт» до 15:00 10.06.2024. КР: подписанный договор в CRM.</p>
+                        <p class="text-gray-700"><strong>Почему хорошо:</strong> Конкретное действие, срок, конечный результат.</p>
+                    </div>
                 </div>
-                <div class="card p-8">
-                    <h3 class="text-2xl font-bold mb-4">Если задачу ставят ТЕБЕ</h3>
-                    <p class="mb-4 text-gray-600">Если задача сформулирована некорректно:</p>
-                     <ol class="space-y-3 list-decimal list-inside text-gray-700">
-                        <li><b>Не выполняй вслепую.</b> Не приступай без уточнений.</li>
-                        <li><b>Переспроси постановщика.</b> Уточни формулировку, КР и срок.</li>
-                        <li><b>Предложи корректную формулировку.</b> Напиши в комментарии свое понимание задачи.</li>
-                        <li><b>Зафиксируй результат.</b> Обнови описание задачи или закрепи договоренности в комментарии.</li>
-                        <li><b>Если реакции нет — сообщи руководителю.</b> Не оставляй задачу "подвисшей".</li>
-                        <li><b>Проявляй инициативу.</b> Уточнение задачи — это признак профессионализма.</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
 
-        <section id="tools" class="scroll-mt-20">
-            <h2 class="text-3xl font-bold mb-2 text-center">Быстрые инструменты</h2>
-            <p class="text-center text-gray-600 mb-8">Практические инструменты для ежедневной работы: экспресс-проверка задачи и готовые фразы для комментариев.</p>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="card p-8">
-                    <h3 class="text-2xl font-bold mb-4">Проверка задачи за 60 секунд</h3>
-                    <p class="mb-4 text-gray-600">Перед тем как приступить, задай себе 4 вопроса:</p>
-                    <ul class="space-y-3 text-lg">
-                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">1.</span>Что нужно сделать?</li>
-                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">2.</span>Какой конечный результат?</li>
-                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">3.</span>К какому сроку?</li>
-                        <li class="flex items-start"><span class="text-[#81B29A] mr-2">4.</span>Кто за это отвечает?</li>
-                    </ul>
-                    <p class="mt-4 text-gray-600">Если нет ответа хотя бы на один вопрос — уточни у постановщика.</p>
+                <!-- Example 2 -->
+                <div class="card p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Доработка макета</h3>
+                    <div class="flex justify-center mb-4">
+                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-2">Плохо</button>
+                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-2">Хорошо</button>
+                    </div>
+                    <div id="bad-2" class="tab-content">
+                        <p class="text-red-600 font-bold text-lg mb-2">Доделать макет</p>
+                        <p class="text-gray-700"><strong>Почему плохо:</strong> Не указано что за макет, к какому сроку и что считать готовым.</p>
+                    </div>
+                    <div id="good-2" class="tab-content hidden">
+                        <p class="text-green-600 font-bold text-lg mb-2">Завершить макет презентации для встречи с партнёрами до 12:00 18.07.2024. КР: макет утвержден руководителем.</p>
+                        <p class="text-gray-700"><strong>Почему хорошо:</strong> Конкретика, срок, критерий готовности.</p>
+                    </div>
                 </div>
-                <div class="card p-8">
-                    <h3 class="text-2xl font-bold mb-4">Шаблоны фраз для комментариев</h3>
-                    <p class="mb-4 text-gray-600">Используйте эти фразы, чтобы сэкономить время и сделать общение в задачах более четким. Нажмите, чтобы скопировать.</p>
-                    <div class="space-y-3 phrases-container">
+
+                <!-- Example 3 -->
+                <div class="card p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Настройка рекламы</h3>
+                    <div class="flex justify-center mb-4">
+                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-3">Плохо</button>
+                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-3">Хорошо</button>
+                    </div>
+                    <div id="bad-3" class="tab-content">
+                        <p class="text-red-600 font-bold text-lg mb-2">Настроить рекламу</p>
+                        <p class="text-gray-700"><strong>Почему плохо:</strong> Слишком общее.</p>
+                    </div>
+                    <div id="good-3" class="tab-content hidden">
+                        <p class="text-green-600 font-bold text-lg mb-2">Настроить рекламную кампанию в Яндекс.Директ для акции «Осень-2025» до 20.08.2024. КР: запущена кампания с бюджетом 50 тыс. руб.</p>
+                        <p class="text-gray-700"><strong>Почему хорошо:</strong> Указана платформа, цель, срок, бюджет.</p>
+                    </div>
+                </div>
+
+                <!-- Example 4 -->
+                <div class="card p-6 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Обновление прайса</h3>
+                    <div class="flex justify-center mb-4">
+                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-4">Плохо</button>
+                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-4">Хорошо</button>
+                    </div>
+                    <div id="bad-4" class="tab-content">
+                        <p class="text-red-600 font-bold text-lg mb-2">Обновить прайс</p>
+                        <p class="text-gray-700"><strong>Почему плохо:</strong> Не сказано какой прайс и когда.</p>
+                    </div>
+                    <div id="good-4" class="tab-content hidden">
+                        <p class="text-green-600 font-bold text-lg mb-2">Обновить прайс-лист на сезон «Осень-2025» для сайта и печатных материалов до 31.07.2024. КР: размещён новый прайс на сайте и отправлен в печать.</p>
+                        <p class="text-gray-700"><strong>Почему хорошо:</strong> Указан тип прайса, срок, каналы распространения, КР.</p>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Section: Частые ошибки -->
+        <section id="mistakes" class="mb-16">
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Частые ошибки при работе с задачами</h2>
+            <div class="space-y-4">
+                <!-- Mistake 1 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-1">
+                        Постановка задачи без КР
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-1" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> «Посмотреть показатели продаж.»</p>
+                        <p><strong>Как нужно:</strong> «Подготовить отчет по продажам за июнь 2025 до 14:00 15.07.2025. КР: отчет с графиками и комментариями отправлен руководителю.»</p>
+                    </div>
+                </div>
+                <!-- Mistake 2 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-2">
+                        Отсутствие дедлайна
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-2" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> «Провести анализ сайта.»</p>
+                        <p><strong>Как нужно:</strong> «Провести анализ юзабилити сайта до 20.07.2025. КР: перечень рекомендаций по улучшению.»</p>
+                    </div>
+                </div>
+                <!-- Mistake 3 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-3">
+                        Нет ответственного
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-3" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> Задача поставлена группе без закрепления за конкретным сотрудником.</p>
+                    </div>
+                </div>
+                <!-- Mistake 4 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-4">
+                        Обсуждения в сторонних мессенджерах
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-4" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> Вопросы и согласования идут в WhatsApp / Telegram.</p>
+                    </div>
+                </div>
+                <!-- Mistake 5 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-5">
+                        Неопределённый или плавающий дедлайн
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-5" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> Дедлайн не зафиксирован сразу при постановке задачи.</p>
+                        <p><strong>Как нужно:</strong> Крайний срок определяется сразу. Изменить его можно в течение суток после постановки задачи. В дальнейшем корректировка возможна только по объективной причине от ответственного.</p>
+                    </div>
+                </div>
+                <!-- Mistake 6 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-6">
+                        Формулировка "срочно", без реального приоритета
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-6" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> «СРОЧНО доделать презентацию!» без причины и срока.</p>
+                    </div>
+                </div>
+                <!-- Mistake 7 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-7">
+                        Подмена приоритета личной срочностью
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-7" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> Срочность задачи вызвана не обстоятельствами, а тем, что вы сами оставили её «на последний момент». В итоге требуется срочная помощь коллег.</p>
+                        <p><strong>Последствие:</strong> Это нарушает планирование и рабочие процессы команды.</p>
+                    </div>
+                </div>
+                <!-- Mistake 8 -->
+                <div class="card p-6">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-8">
+                        Неуместное объявление "Это важная задача"
+                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                    </button>
+                    <div id="mistake-8" class="accordion-content hidden mt-4 text-gray-700">
+                        <p><strong>Ошибка:</strong> Маркировать как "важную" задачу, которая не требует немедленного выполнения.</p>
+                        <p><strong>Как нужно:</strong> Под «важной задачей» понимаем только действительно срочные задачи, вызванные непредвиденными обстоятельствами. Важно уважать своё и чужое время, иначе постоянные «срочные» задачи приводят к хаосу.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Памятка сотрудника -->
+        <section id="memo" class="mb-16">
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Памятка сотрудника</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold mb-4">Если ставишь ты:</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Что именно нужно сделать?</li>
+                        <li>Как пойму, что задача выполнена? (КР)</li>
+                        <li>Когда нужно закончить? (Срок)</li>
+                        <li>Кто отвечает за результат? (Ответственный)</li>
+                        <li>Что поможет в работе: чек-лист, подзадачи?</li>
+                        <li>Все ли знают об этой задаче? (Соисполнители/Наблюдатели)</li>
+                        <li>Есть ли приоритет?</li>
+                        <li>Все ли комментарии и файлы прикреплены?</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold mb-4">Если ставят тебе:</h3>
+                    <p class="text-gray-700 mb-4">Прежде чем приступить к задаче, задай себе 4 вопроса:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Что нужно сделать?</li>
+                        <li>Какой конечный результат?</li>
+                        <li>К какому сроку?</li>
+                        <li>Кто за это отвечает?</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4">Если на любой вопрос нет ответа:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Ставлю уточняющий комментарий.</li>
+                        <li>Фиксирую договоренности.</li>
+                        <li>Только после этого начинаю выполнение.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Инструменты -->
+        <section id="tools" class="mb-16">
+            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Инструменты для эффективной работы</h2>
+
+            <div class="card p-6 mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Золотой стандарт постановки задачи</h3>
+                <div class="grid md:grid-cols-2 gap-4 text-gray-700">
+                    <div>☑ <strong class="text-gray-900">ЧТО</strong> сделать?</div>
+                    <div>☑ <strong class="text-gray-900">КОНЕЧНЫЙ РЕЗУЛЬТАТ (КР)</strong></div>
+                    <div>☑ <strong class="text-gray-900">СРОК</strong> выполнения</div>
+                    <div>☑ <strong class="text-gray-900">ОТВЕТСТВЕННЫЙ</strong></div>
+                    <div>☑ <strong class="text-gray-900">ПРИОРИТЕТ</strong> (если критично)</div>
+                    <div>☑ <strong class="text-gray-900">КОММЕНТАРИИ + файлы</strong></div>
+                </div>
+                <p class="text-lg font-bold text-gray-900 mt-6">Формула идеальной задачи: Действие + КР + Срок + Ответственный + Приоритет</p>
+            </div>
+
+            <div class="card p-6">
+                <h3 class="text-2xl font-semibold mb-4">Список фраз для комментариев в задачах</h3>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Для уточнения задачи:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase1" class="flex-grow text-gray-700">Правильно ли я понял, что конечный результат ...?</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase1">Копировать</button>
+                            </li>
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase2" class="flex-grow text-gray-700">Подтвердите, пожалуйста, срок выполнения: ...</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase2">Копировать</button>
+                            </li>
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase3" class="flex-grow text-gray-700">Какой формат результата вам удобнее: файл, таблица, ссылка?</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase3">Копировать</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Для промежуточного отчёта:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase4" class="flex-grow text-gray-700">На текущий момент выполнено... Прикладываю промежуточный файл.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase4">Копировать</button>
+                            </li>
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase5" class="flex-grow text-gray-700">Есть прогресс по задаче: ... Продолжаю работу.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase5">Копировать</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">При запросе продления срока:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase6" class="flex-grow text-gray-700">Прошу согласовать перенос срока на ... по причине ...</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase6">Копировать</button>
+                            </li>
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase7" class="flex-grow text-gray-700">Столкнулся с уточняющими моментами, потребуется дополнительно ... дней.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase7">Копировать</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Для закрытия задачи:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase8" class="flex-grow text-gray-700">Конечный результат достигнут: прикладываю файл/ссылку. Завершаю задачу.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase8">Копировать</button>
+                            </li>
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase9" class="flex-grow text-gray-700">Проверьте, пожалуйста, результат. Если всё в порядке — закрываю задачу.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase9">Копировать</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">При делегировании:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase10" class="flex-grow text-gray-700">Передаю задачу Коллеге, так как ... Все детали передал.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase10">Копировать</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Если задача поставлена некорректно:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase11" class="flex-grow text-gray-700">Формулировка задачи не полная. Для корректного выполнения мне нужно понять: ...</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase11">Копировать</button>
+                            </li>
+                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
+                                <span id="phrase12" class="flex-grow text-gray-700">Прошу уточнить КР и дедлайн, пока это не ясно.</span>
+                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase12">Копировать</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
-    
-    <div id="copy-notification" class="fixed bottom-5 right-5 bg-[#81B29A] text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">
-        Текст скопирован!
-    </div>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 Памятка по работе с задачами. Все права защищены.</p>
+        </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const examplesData = [
-                { title: "Работа с клиентом", bad: "Поработать с клиентом", reason: "Не ясно, что конкретно нужно сделать", good: "Согласовать ТЗ с клиентом ООО «Старт» до 15:00 22.07.2025. КР: подписанный договор в CRM." },
-                { title: "Работа с макетом", bad: "Доделать макет", reason: "Не указано что за макет, к какому сроку и что считать готовым", good: "Завершить макет презентации для встречи с партнёрами до 12:00 25.07.2025. КР: макет утвержден руководителем." },
-                { title: "Настройка рекламы", bad: "Настроить рекламу", reason: "Слишком общее", good: "Настроить рекламную кампанию в Яндекс.Директ для акции «Осень-2025» до 20.08.2025. КР: запущена кампания с бюджетом 50 тыс. руб." },
-                { title: "Обновление прайса", bad: "Обновить прайс", reason: "Не сказано какой прайс и когда", good: "Обновить прайс-лист на сезон «Осень-2025» для сайта и печатных материалов до 31.07.2025. КР: размещён новый прайс на сайте и отправлен в печать." },
-                { title: "Подготовка отчёта", bad: "Сделать отчёт", reason: "Неясно по какому поводу, для кого и к какому сроку", good: "Подготовить отчёт по продажам за II квартал 2025 к 12:00 28.07.2025. КР: отправлен на почту руководителю." }
-            ];
-
-            const mistakesData = [
-                { title: "Постановка задачи без КР", error: "«Посмотреть показатели продаж.»", solution: "«Подготовить отчет по продажам за июнь 2025 до 14:00 29.07.2025. КР: отчет с графиками и комментариями отправлен руководителю.»" },
-                { title: "Отсутствие дедлайна", error: "«Провести анализ сайта.»", solution: "«Провести анализ юзабилити сайта до 30.07.2025. КР: перечень рекомендаций по улучшению.»" },
-                { title: "Нет ответственного", error: "Задача поставлена группе без закрепления за конкретным сотрудником.", solution: "Всегда назначайте одного ответственного за конечный результат." },
-                { title: "Обсуждения в сторонних мессенджерах", error: "Вопросы и согласования идут в WhatsApp / Telegram.", solution: "Вся коммуникация должна вестись в комментариях к задаче, чтобы сохранить контекст." },
-                { title: "Неопределённый или плавающий дедлайн", error: "Дедлайн не зафиксирован сразу при постановке задачи.", solution: "Крайний срок определяется сразу. Изменить его можно в течение суток после постановки задачи. В дальнейшем корректировка возможна только по объективной причине от ответственного." },
-                { title: "Формулировка 'срочно', без реального приоритета", error: "«СРОЧНО доделать презентацию!» без причины и срока.", solution: "Используйте флаг 'Высокий приоритет' и всегда указывайте конкретный дедлайн." },
-                { title: "Подмена приоритета личной срочностью", error: "Срочность задачи вызвана тем, что вы сами оставили её «на последний момент».", solution: "Это нарушает планирование команды. Планируйте свою работу, чтобы не создавать искусственную срочность для коллег." },
-                { title: "Неуместное объявление 'Это важная задача'", error: "Маркировать как 'важную' задачу, которая не требует немедленного выполнения.", solution: "Под «важной задачей» понимаем только действительно срочные задачи, вызванные непредвиденными обстоятельствами. Уважайте своё и чужое время." }
-            ];
-            
-            const phrasesData = [
-                { category: "Для уточнения задачи", phrases: ["Правильно ли я понял, что конечный результат ...?", "Подтвердите, пожалуйста, срок выполнения: ...", "Какой формат результата вам удобнее: файл, таблица, ссылка?"] },
-                { category: "Для промежуточного отчёта", phrases: ["На текущий момент выполнено... Прикладываю промежуточный файл.", "Есть прогресс по задаче: ... Продолжаю работу."] },
-                { category: "При запросе продления срока", phrases: ["Прошу согласовать перенос срока на ... по причине ...", "Столкнулся с уточняющими моментами, потребуется дополнительно ... дней."] },
-                { category: "Для закрытия задачи", phrases: ["Конечный результат достигнут: прикладываю файл/ссылку. Завершаю задачу.", "Проверьте, пожалуйста, результат. Если всё в порядке — закрываю задачу."] },
-                { category: "При делегировании", phrases: ["Передаю задачу Коллеге, так как ... Все детали передал."] },
-                { category: "Если задача поставлена некорректно", phrases: ["Формулировка задачи не полная. Для корректного выполнения мне нужно понять: ...", "Прошу уточнить КР и дедлайн, пока это не ясно."] }
-            ];
-
-            const exampleContainer = document.querySelector('.example-container');
-            examplesData.forEach((data, index) => {
-                const card = `
-                    <div class="card p-6">
-                        <h3 class="text-xl font-bold mb-4">${data.title}</h3>
-                        <div class="flex space-x-2 mb-4">
-                            <button class="tab-button w-1/2 py-2 px-4 rounded-md text-sm font-medium active" data-target="bad-${index}">Плохо</button>
-                            <button class="tab-button w-1/2 py-2 px-4 rounded-md text-sm font-medium" data-target="good-${index}">Хорошо</button>
-                        </div>
-                        <div id="bad-${index}" class="tab-content">
-                            <p class="text-red-600 bg-red-50 p-3 rounded-md">"${data.bad}"</p>
-                            <p class="mt-2 text-sm text-gray-500"><b>Почему плохо:</b> ${data.reason}</p>
-                        </div>
-                        <div id="good-${index}" class="tab-content hidden">
-                            <p class="text-green-700 bg-green-50 p-3 rounded-md">"${data.good}"</p>
-                        </div>
-                    </div>`;
-                exampleContainer.innerHTML += card;
-            });
-
-            const accordionContainer = document.querySelector('.accordion-container');
-            mistakesData.forEach((data, index) => {
-                const item = `
-                    <div class="card">
-                        <button class="accordion-button w-full flex justify-between items-center text-left p-5">
-                            <span class="font-semibold text-lg">${data.title}</span>
-                            <span class="accordion-arrow transform transition-transform duration-300">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </button>
-                        <div class="accordion-content hidden p-5 border-t border-gray-200">
-                            <div class="space-y-3">
-                                <p><strong class="text-red-600">Ошибка:</strong> ${data.error}</p>
-                                <p><strong class="text-green-700">Как нужно:</strong> ${data.solution}</p>
-                            </div>
-                        </div>
-                    </div>`;
-                accordionContainer.innerHTML += item;
-            });
-
-            const phrasesContainer = document.querySelector('.phrases-container');
-            phrasesData.forEach(data => {
-                const categoryHtml = `
-                    <div>
-                        <h4 class="font-semibold mb-2">${data.category}</h4>
-                        <div class="space-y-2">
-                            ${data.phrases.map(phrase => `
-                                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-md">
-                                    <p class="text-gray-700 text-sm flex-grow">"${phrase}"</p>
-                                    <button class="copy-button ml-2 flex-shrink-0 bg-[#81B29A] text-white text-xs font-bold py-1 px-2 rounded-md hover:bg-[#6a9983]">Копировать</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-                phrasesContainer.innerHTML += categoryHtml;
-            });
-
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const parent = button.closest('.card');
-                    parent.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                    button.classList.add('active');
-                    parent.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-                    document.getElementById(button.dataset.target).classList.remove('hidden');
-                });
-            });
-
-            document.querySelectorAll('.accordion-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const content = button.nextElementSibling;
-                    button.classList.toggle('open');
-                    content.classList.toggle('hidden');
-                });
-            });
-            
-            const notification = document.getElementById('copy-notification');
-            document.querySelectorAll('.copy-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const textToCopy = button.previousElementSibling.innerText;
-                    navigator.clipboard.writeText(textToCopy).then(() => {
-                        notification.classList.remove('opacity-0');
-                        setTimeout(() => {
-                            notification.classList.add('opacity-0');
-                        }, 2000);
-                    });
-                });
-            });
-
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 80) {
-                        current = section.getAttribute('id');
-                    }
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
 
-                navLinks.forEach(link => {
+                // Update active class for navigation links
+                document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
-                        link.classList.add('active');
-                    }
                 });
+                this.classList.add('active');
+            });
+        });
+
+        // Set active class on initial load based on URL hash
+        window.addEventListener('load', () => {
+            if (window.location.hash) {
+                const activeLink = document.querySelector(`nav a[href="${window.location.hash}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            } else {
+                // Default to 'Основы' if no hash
+                document.querySelector('nav a[href="#basics"]').classList.add('active');
+            }
+        });
+
+        // Intersection Observer for active navigation links on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.7 // Adjust as needed
+        };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${entry.target.id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+
+        // Tab functionality for examples
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                const parentCard = this.closest('.card');
+
+                // Deactivate all buttons in this card
+                parentCard.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                // Hide all tab contents in this card
+                parentCard.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+
+                // Activate the clicked button
+                this.classList.add('active');
+                // Show the corresponding content
+                parentCard.querySelector(`#${tabId}`).classList.remove('hidden');
+            });
+        });
+
+        // Initialize first tab as active for each example card
+        document.querySelectorAll('.card').forEach(card => {
+            const firstTabButton = card.querySelector('.tab-button');
+            if (firstTabButton) {
+                firstTabButton.click(); // Simulate click to activate
+            }
+        });
+
+
+        // Accordion functionality for mistakes
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const accordionId = this.dataset.accordion;
+                const content = document.getElementById(accordionId);
+
+                this.classList.toggle('open');
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    content.style.maxHeight = content.scrollHeight + 'px'; // For smooth transition
+                } else {
+                    content.style.maxHeight = null; // Reset max-height
+                    content.classList.add('hidden');
+                }
+            });
+        });
+
+        // Copy to clipboard functionality
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const textToCopy = document.getElementById(targetId).textContent;
+                
+                // Use document.execCommand for broader compatibility in iframes
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    this.textContent = 'Скопировано!';
+                    setTimeout(() => {
+                        this.textContent = 'Копировать';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Не удалось скопировать текст: ', err);
+                    this.textContent = 'Ошибка!';
+                } finally {
+                    document.body.removeChild(textarea);
+                }
             });
         });
     </script>
