@@ -7,41 +7,59 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Corporate (F5C945, 1E1B20) -->
-    <!-- Application Structure Plan: A thematic, single-page scrolling application with a sticky navigation header for quick access to key sections: "Основы", "Примеры", "Ошибки", "Памятка", and "Инструменты". This structure transforms the static PDF into a logical learning path. It starts with the fundamentals, shows practical examples, highlights common pitfalls, provides actionable advice for different roles (task setter/receiver), and ends with ready-to-use tools. This is more intuitive for learning and retention than the original document's linear page flow. Interactive elements like toggles and accordions are used to make content digestible and engaging. -->
-    <!-- Visualization & Content Choices: 
-        - Report Info: Checklist/Golden Standard -> Goal: Inform -> Viz: Interactive styled list -> Interaction: None, visual grouping -> Justification: Consolidates core principles upfront for clarity. -> Library: Tailwind.
-        - Report Info: Bad vs. Good Examples -> Goal: Compare -> Viz: Tabbed cards for each scenario -> Interaction: Click to toggle between "Плохо" and "Хорошо" -> Justification: Allows direct, side-by-side comparison which is highly effective for learning. -> Library: JS, Tailwind.
-        - Report Info: Common Mistakes -> Goal: Organize/Inform -> Viz: Accordion component -> Interaction: Click to expand/collapse details of each mistake -> Justification: Reduces initial information overload and allows users to focus on specific errors. -> Library: JS, Tailwind.
-        - Report Info: Employee Memos -> Goal: Inform/Guide -> Viz: Role-based sections ("Если ставишь ты", "Если ставят тебе") -> Interaction: None, structural organization -> Justification: Personalizes the advice, making it more relatable and actionable. -> Library: Tailwind.
-        - Report Info: Quick Check/Phrases -> Goal: Provide Tools -> Viz: Styled list and copyable text blocks -> Interaction: Click-to-copy button for phrases -> Justification: Makes the phrases practical and immediately usable. -> Library: JS, Tailwind.
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Modern Color Palette:
+        Primary: Indigo (for headings, main buttons)
+        Accent: Yellow (for highlights, active states)
+        Background: Light Gray
+        Text: Dark Gray
     -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F8F8; /* Very light gray background */
-            color: #1E1B20; /* Corporate dark gray for main text */
+            background-color: #F9FAFB; /* Lighter background */
+            color: #1F2937; /* Darker text */
         }
         .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
+            transition: color 0.3s, border-bottom-color 0.3s, transform 0.2s;
             border-bottom: 2px solid transparent;
+            position: relative;
         }
-        .nav-link:hover, .nav-link.active {
-            color: #F5C945; /* Corporate yellow for active/hover nav links */
-            border-bottom-color: #F5C945;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #FBBF24; /* Yellow-500 */
+            transition: width 0.3s ease-out, left 0.3s ease-out;
         }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+
         .card {
             background-color: #FFFFFF;
-            border: 1px solid #EAEAEA; /* Light gray border for cards */
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #E5E7EB; /* Light border */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Deeper shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+        }
+        
+        .accordion-button {
+            transition: background-color 0.3s;
         }
         .accordion-button.open .accordion-arrow {
             transform: rotate(180deg);
@@ -49,241 +67,311 @@
         .accordion-arrow {
             transition: transform 0.3s;
         }
-        .tab-button.active {
-            background-color: #F5C945; /* Corporate yellow for active tab button background */
-            color: #FFFFFF; /* White text on active tab */
-        }
         .tab-button {
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            border: 1px solid #D1D5DB; /* Light gray border */
         }
+        .tab-button.active {
+            background-color: #4F46E5; /* Indigo-600 */
+            color: #FFFFFF;
+            border-color: #4F46E5;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #E5E7EB; /* Gray-200 */
+            transform: translateY(-1px);
+        }
+
         .copy-button {
-            transition: background-color 0.2s;
+            background-color: #4F46E5; /* Indigo-600 */
+            color: #FFFFFF;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .copy-button:hover {
+            background-color: #4338CA; /* Indigo-700 */
+            transform: translateY(-1px);
         }
         .copy-button:active {
-            background-color: #0F0E10; /* Slightly darker dark gray for active copy button */
+            background-color: #3730A3; /* Indigo-800 */
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3F4F6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9CA3AF;
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+    <header id="header" class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0 flex items-center space-x-2">
-                    <span class="text-2xl font-bold text-gray-800">Памятка по задачам</span>
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <span class="text-3xl font-extrabold text-indigo-700">Памятка по задачам</span>
                 </div>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#basics" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Основы</a>
-                    <a href="#examples" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Примеры</a>
-                    <a href="#mistakes" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Ошибки</a>
-                    <a href="#memo" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Памятка</a>
-                    <a href="#tools" class="nav-link text-gray-600 hover:text-gray-900 font-medium">Инструменты</a>
+                <nav class="hidden md:flex space-x-8 lg:space-x-12">
+                    <a href="#basics" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Основы</a>
+                    <a href="#examples" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Примеры</a>
+                    <a href="#mistakes" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Ошибки</a>
+                    <a href="#memo" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Памятка</a>
+                    <a href="#incorrect_task" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Некорректная задача</a>
+                    <a href="#tools" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Инструменты</a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <main class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-20 bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-12 rounded-2xl shadow-xl">
+            <h1 class="text-5xl font-extrabold mb-4 leading-tight">Ваш Гид по Эффективному Управлению Задачами</h1>
+            <p class="text-xl opacity-90 max-w-3xl mx-auto mb-8">
+                Освойте "Золотой стандарт" постановки задач и избегайте распространенных ошибок для повышения продуктивности вашей команды.
+            </p>
+            <a href="#basics" class="inline-block bg-yellow-400 text-indigo-900 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition duration-300 ease-in-out">
+                Начать обучение <i class="fas fa-arrow-down ml-2"></i>
+            </a>
+        </section>
 
         <!-- Section: Основы -->
-        <section id="basics" class="mb-16">
-            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Основы корректной постановки задач</h2>
+        <section id="basics" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Основы корректной постановки задач</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">1. Что сделать?</h3>
-                    <p class="text-gray-700">Формулируйте задачу как конкретное действие.</p>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-lightbulb text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">1. Что сделать?</h3>
+                    <p class="text-gray-700">Формулируйте задачу как конкретное действие, избегая двусмысленности.</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">2. Конечный Результат (КР)</h3>
-                    <p class="text-gray-700">Определите, что является результатом задачи. Что должно быть получено в итоге?</p>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-bullseye text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">2. Конечный Результат (КР)</h3>
+                    <p class="text-gray-700">Четко определите, что является ожидаемым результатом. Что должно быть получено в итоге?</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">3. Дедлайн</h3>
-                    <p class="text-gray-700">Укажите точную дату и время завершения задачи.</p>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-calendar-alt text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">3. Дедлайн</h3>
+                    <p class="text-gray-700">Укажите точную дату и время завершения задачи, чтобы избежать задержек.</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">4. Ответственный</h3>
-                    <p class="text-gray-700">Назначьте одного сотрудника, который будет нести ответственность за выполнение.</p>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-user-check text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">4. Ответственный</h3>
+                    <p class="text-gray-700">Назначьте одного сотрудника, который будет нести полную ответственность за выполнение.</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">5. Соисполнители / Наблюдатели</h3>
-                    <p class="text-gray-700">Добавьте при необходимости. Наблюдатели всегда руководители.</p>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-users text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">5. Соисполнители / Наблюдатели</h3>
+                    <p class="text-gray-700">Добавьте при необходимости. Наблюдатели, как правило, руководители или заинтересованные стороны.</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">6. Чек-лист / Подзадачи</h3>
-                    <p class="text-gray-700">Структурируйте шаги внутри задачи для ясности процесса.</p>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-list-check text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">6. Чек-лист / Подзадачи</h3>
+                    <p class="text-gray-700">Структурируйте шаги внутри задачи для ясности процесса и контроля прогресса.</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">7. Приоритет</h3>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-exclamation-triangle text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">7. Приоритет</h3>
                     <p class="text-gray-700">Проставьте отметку, если задача критичная и требует немедленного внимания.</p>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-xl font-semibold mb-3">8. Комментарии и файлы</h3>
+                <div class="card p-8 flex flex-col items-start">
+                    <i class="fas fa-comments text-indigo-500 text-3xl mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-3 text-gray-800">8. Комментарии и файлы</h3>
                     <p class="text-gray-700">Ведите всё общение по задаче только в комментариях и прикрепляйте все необходимые документы.</p>
                 </div>
             </div>
         </section>
 
         <!-- Section: Примеры -->
-        <section id="examples" class="mb-16">
-            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Примеры формулировок: «Плохо – Хорошо»</h2>
+        <section id="examples" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Примеры формулировок: «Плохо – Хорошо»</h2>
             <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Example 1 -->
-                <div class="card p-6 flex flex-col">
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Работа с клиентом</h3>
-                    <div class="flex justify-center mb-4">
-                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-1">Плохо</button>
-                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-1">Хорошо</button>
+                <div class="card p-8 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Работа с клиентом</h3>
+                    <div class="flex justify-center mb-6">
+                        <button class="tab-button px-8 py-3 rounded-l-full font-medium text-lg text-gray-700 bg-gray-100 active" data-tab="bad-1">Плохо</button>
+                        <button class="tab-button px-8 py-3 rounded-r-full font-medium text-lg text-gray-700 bg-gray-100" data-tab="good-1">Хорошо</button>
                     </div>
-                    <div id="bad-1" class="tab-content">
-                        <p class="text-red-600 font-bold text-lg mb-2">Поработать с клиентом</p>
+                    <div id="bad-1" class="tab-content text-center">
+                        <p class="text-red-600 font-bold text-xl mb-3">Поработать с клиентом</p>
                         <p class="text-gray-700"><strong>Почему плохо:</strong> Не ясно, что конкретно нужно сделать.</p>
                     </div>
-                    <div id="good-1" class="tab-content hidden">
-                        <p class="text-green-600 font-bold text-lg mb-2">Согласовать ТЗ с клиентом ООО «Старт» до 15:00 10.06.2024. КР: подписанный договор в CRM.</p>
+                    <div id="good-1" class="tab-content hidden text-center">
+                        <p class="text-green-600 font-bold text-xl mb-3">Согласовать ТЗ с клиентом ООО «Старт» до 15:00 10.06.2024. КР: подписанный договор в CRM.</p>
                         <p class="text-gray-700"><strong>Почему хорошо:</strong> Конкретное действие, срок, конечный результат.</p>
                     </div>
                 </div>
 
                 <!-- Example 2 -->
-                <div class="card p-6 flex flex-col">
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Доработка макета</h3>
-                    <div class="flex justify-center mb-4">
-                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-2">Плохо</button>
-                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-2">Хорошо</button>
+                <div class="card p-8 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Доработка макета</h3>
+                    <div class="flex justify-center mb-6">
+                        <button class="tab-button px-8 py-3 rounded-l-full font-medium text-lg text-gray-700 bg-gray-100 active" data-tab="bad-2">Плохо</button>
+                        <button class="tab-button px-8 py-3 rounded-r-full font-medium text-lg text-gray-700 bg-gray-100" data-tab="good-2">Хорошо</button>
                     </div>
-                    <div id="bad-2" class="tab-content">
-                        <p class="text-red-600 font-bold text-lg mb-2">Доделать макет</p>
+                    <div id="bad-2" class="tab-content text-center">
+                        <p class="text-red-600 font-bold text-xl mb-3">Доделать макет</p>
                         <p class="text-gray-700"><strong>Почему плохо:</strong> Не указано что за макет, к какому сроку и что считать готовым.</p>
                     </div>
-                    <div id="good-2" class="tab-content hidden">
-                        <p class="text-green-600 font-bold text-lg mb-2">Завершить макет презентации для встречи с партнёрами до 12:00 18.07.2024. КР: макет утвержден руководителем.</p>
+                    <div id="good-2" class="tab-content hidden text-center">
+                        <p class="text-green-600 font-bold text-xl mb-3">Завершить макет презентации для встречи с партнёрами до 12:00 18.07.2024. КР: макет утвержден руководителем.</p>
                         <p class="text-gray-700"><strong>Почему хорошо:</strong> Конкретика, срок, критерий готовности.</p>
                     </div>
                 </div>
 
                 <!-- Example 3 -->
-                <div class="card p-6 flex flex-col">
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Настройка рекламы</h3>
-                    <div class="flex justify-center mb-4">
-                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-3">Плохо</button>
-                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-3">Хорошо</button>
+                <div class="card p-8 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Настройка рекламы</h3>
+                    <div class="flex justify-center mb-6">
+                        <button class="tab-button px-8 py-3 rounded-l-full font-medium text-lg text-gray-700 bg-gray-100 active" data-tab="bad-3">Плохо</button>
+                        <button class="tab-button px-8 py-3 rounded-r-full font-medium text-lg text-gray-700 bg-gray-100" data-tab="good-3">Хорошо</button>
                     </div>
-                    <div id="bad-3" class="tab-content">
-                        <p class="text-red-600 font-bold text-lg mb-2">Настроить рекламу</p>
+                    <div id="bad-3" class="tab-content text-center">
+                        <p class="text-red-600 font-bold text-xl mb-3">Настроить рекламу</p>
                         <p class="text-gray-700"><strong>Почему плохо:</strong> Слишком общее.</p>
                     </div>
-                    <div id="good-3" class="tab-content hidden">
-                        <p class="text-green-600 font-bold text-lg mb-2">Настроить рекламную кампанию в Яндекс.Директ для акции «Осень-2025» до 20.08.2024. КР: запущена кампания с бюджетом 50 тыс. руб.</p>
+                    <div id="good-3" class="tab-content hidden text-center">
+                        <p class="text-green-600 font-bold text-xl mb-3">Настроить рекламную кампанию в Яндекс.Директ для акции «Осень-2025» до 20.08.2024. КР: запущена кампания с бюджетом 50 тыс. руб.</p>
                         <p class="text-gray-700"><strong>Почему хорошо:</strong> Указана платформа, цель, срок, бюджет.</p>
                     </div>
                 </div>
 
                 <!-- Example 4 -->
-                <div class="card p-6 flex flex-col">
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Обновление прайса</h3>
-                    <div class="flex justify-center mb-4">
-                        <button class="tab-button px-6 py-2 rounded-l-lg font-medium text-gray-700 bg-gray-100 border border-gray-200 active" data-tab="bad-4">Плохо</button>
-                        <button class="tab-button px-6 py-2 rounded-r-lg font-medium text-gray-700 bg-gray-100 border border-gray-200" data-tab="good-4">Хорошо</button>
+                <div class="card p-8 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Обновление прайса</h3>
+                    <div class="flex justify-center mb-6">
+                        <button class="tab-button px-8 py-3 rounded-l-full font-medium text-lg text-gray-700 bg-gray-100 active" data-tab="bad-4">Плохо</button>
+                        <button class="tab-button px-8 py-3 rounded-r-full font-medium text-lg text-gray-700 bg-gray-100" data-tab="good-4">Хорошо</button>
                     </div>
-                    <div id="bad-4" class="tab-content">
-                        <p class="text-red-600 font-bold text-lg mb-2">Обновить прайс</p>
+                    <div id="bad-4" class="tab-content text-center">
+                        <p class="text-red-600 font-bold text-xl mb-3">Обновить прайс</p>
                         <p class="text-gray-700"><strong>Почему плохо:</strong> Не сказано какой прайс и когда.</p>
                     </div>
-                    <div id="good-4" class="tab-content hidden">
-                        <p class="text-green-600 font-bold text-lg mb-2">Обновить прайс-лист на сезон «Осень-2025» для сайта и печатных материалов до 31.07.2024. КР: размещён новый прайс на сайте и отправлен в печать.</p>
+                    <div id="good-4" class="tab-content hidden text-center">
+                        <p class="text-green-600 font-bold text-xl mb-3">Обновить прайс-лист на сезон «Осень-2025» для сайта и печатных материалов до 31.07.2024. КР: размещён новый прайс на сайте и отправлен в печать.</p>
                         <p class="text-gray-700"><strong>Почему хорошо:</strong> Указан тип прайса, срок, каналы распространения, КР.</p>
+                    </div>
+                </div>
+
+                <!-- Example 5 -->
+                <div class="card p-8 flex flex-col">
+                    <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Сделать отчёт</h3>
+                    <div class="flex justify-center mb-6">
+                        <button class="tab-button px-8 py-3 rounded-l-full font-medium text-lg text-gray-700 bg-gray-100 active" data-tab="bad-5">Плохо</button>
+                        <button class="tab-button px-8 py-3 rounded-r-full font-medium text-lg text-gray-700 bg-gray-100" data-tab="good-5">Хорошо</button>
+                    </div>
+                    <div id="bad-5" class="tab-content text-center">
+                        <p class="text-red-600 font-bold text-xl mb-3">Сделать отчёт</p>
+                        <p class="text-gray-700"><strong>Почему плохо:</strong> Неясно по какому поводу, для кого и к какому сроку.</p>
+                    </div>
+                    <div id="good-5" class="tab-content hidden text-center">
+                        <p class="text-green-600 font-bold text-xl mb-3">Подготовить отчёт по продажам за II квартал 2025 к 12:00 15.07.2025. КР: отправлен на почту руководителю.</p>
+                        <p class="text-gray-700"><strong>Почему хорошо:</strong> Указан период, срок, получатель, КР.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Section: Частые ошибки -->
-        <section id="mistakes" class="mb-16">
-            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Частые ошибки при работе с задачами</h2>
-            <div class="space-y-4">
+        <section id="mistakes" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Частые ошибки при работе с задачами</h2>
+            <div class="space-y-6">
                 <!-- Mistake 1 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-1">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-1">
                         Постановка задачи без КР
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-1" class="accordion-content hidden mt-4 text-gray-700">
-                        <p><strong>Ошибка:</strong> «Посмотреть показатели продаж.»</p>
+                    <div id="mistake-1" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
+                        <p class="mb-2"><strong>Ошибка:</strong> «Посмотреть показатели продаж.»</p>
                         <p><strong>Как нужно:</strong> «Подготовить отчет по продажам за июнь 2025 до 14:00 15.07.2025. КР: отчет с графиками и комментариями отправлен руководителю.»</p>
                     </div>
                 </div>
                 <!-- Mistake 2 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-2">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-2">
                         Отсутствие дедлайна
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-2" class="accordion-content hidden mt-4 text-gray-700">
-                        <p><strong>Ошибка:</strong> «Провести анализ сайта.»</p>
+                    <div id="mistake-2" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
+                        <p class="mb-2"><strong>Ошибка:</strong> «Провести анализ сайта.»</p>
                         <p><strong>Как нужно:</strong> «Провести анализ юзабилити сайта до 20.07.2025. КР: перечень рекомендаций по улучшению.»</p>
                     </div>
                 </div>
                 <!-- Mistake 3 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-3">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-3">
                         Нет ответственного
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-3" class="accordion-content hidden mt-4 text-gray-700">
+                    <div id="mistake-3" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
                         <p><strong>Ошибка:</strong> Задача поставлена группе без закрепления за конкретным сотрудником.</p>
                     </div>
                 </div>
                 <!-- Mistake 4 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-4">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-4">
                         Обсуждения в сторонних мессенджерах
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-4" class="accordion-content hidden mt-4 text-gray-700">
+                    <div id="mistake-4" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
                         <p><strong>Ошибка:</strong> Вопросы и согласования идут в WhatsApp / Telegram.</p>
                     </div>
                 </div>
                 <!-- Mistake 5 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-5">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-5">
                         Неопределённый или плавающий дедлайн
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-5" class="accordion-content hidden mt-4 text-gray-700">
-                        <p><strong>Ошибка:</strong> Дедлайн не зафиксирован сразу при постановке задачи.</p>
+                    <div id="mistake-5" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
+                        <p class="mb-2"><strong>Ошибка:</strong> Дедлайн не зафиксирован сразу при постановке задачи.</p>
                         <p><strong>Как нужно:</strong> Крайний срок определяется сразу. Изменить его можно в течение суток после постановки задачи. В дальнейшем корректировка возможна только по объективной причине от ответственного.</p>
                     </div>
                 </div>
                 <!-- Mistake 6 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-6">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-6">
                         Формулировка "срочно", без реального приоритета
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-6" class="accordion-content hidden mt-4 text-gray-700">
+                    <div id="mistake-6" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
                         <p><strong>Ошибка:</strong> «СРОЧНО доделать презентацию!» без причины и срока.</p>
                     </div>
                 </div>
                 <!-- Mistake 7 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-7">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-7">
                         Подмена приоритета личной срочностью
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-7" class="accordion-content hidden mt-4 text-gray-700">
-                        <p><strong>Ошибка:</strong> Срочность задачи вызвана не обстоятельствами, а тем, что вы сами оставили её «на последний момент». В итоге требуется срочная помощь коллег.</p>
+                    <div id="mistake-7" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
+                        <p class="mb-2"><strong>Ошибка:</strong> Срочность задачи вызвана не обстоятельствами, а тем, что вы сами оставили её «на последний момент». В итоге требуется срочная помощь коллег.</p>
                         <p><strong>Последствие:</strong> Это нарушает планирование и рабочие процессы команды.</p>
                     </div>
                 </div>
                 <!-- Mistake 8 -->
-                <div class="card p-6">
-                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-xl" data-accordion="mistake-8">
+                <div class="card p-8">
+                    <button class="accordion-button flex justify-between items-center w-full text-left font-semibold text-2xl text-gray-800" data-accordion="mistake-8">
                         Неуместное объявление "Это важная задача"
-                        <span class="accordion-arrow transform transition-transform duration-300">&#9660;</span>
+                        <span class="accordion-arrow transform transition-transform duration-300 text-indigo-500"><i class="fas fa-chevron-down"></i></span>
                     </button>
-                    <div id="mistake-8" class="accordion-content hidden mt-4 text-gray-700">
-                        <p><strong>Ошибка:</strong> Маркировать как "важную" задачу, которая не требует немедленного выполнения.</p>
+                    <div id="mistake-8" class="accordion-content hidden mt-6 text-gray-700 leading-relaxed">
+                        <p class="mb-2"><strong>Ошибка:</strong> Маркировать как "важную" задачу, которая не требует немедленного выполнения.</p>
                         <p><strong>Как нужно:</strong> Под «важной задачей» понимаем только действительно срочные задачи, вызванные непредвиденными обстоятельствами. Важно уважать своё и чужое время, иначе постоянные «срочные» задачи приводят к хаосу.</p>
                     </div>
                 </div>
@@ -291,141 +379,241 @@
         </section>
 
         <!-- Section: Памятка сотрудника -->
-        <section id="memo" class="mb-16">
-            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Памятка сотрудника</h2>
+        <section id="memo" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Памятка сотрудника</h2>
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="card p-6">
-                    <h3 class="text-2xl font-semibold mb-4">Если ставишь ты:</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li>Что именно нужно сделать?</li>
-                        <li>Как пойму, что задача выполнена? (КР)</li>
-                        <li>Когда нужно закончить? (Срок)</li>
-                        <li>Кто отвечает за результат? (Ответственный)</li>
-                        <li>Что поможет в работе: чек-лист, подзадачи?</li>
-                        <li>Все ли знают об этой задаче? (Соисполнители/Наблюдатели)</li>
-                        <li>Есть ли приоритет?</li>
-                        <li>Все ли комментарии и файлы прикреплены?</li>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Если ставишь ты:</h3>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Что именно нужно сделать?</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Как пойму, что задача выполнена? (КР)</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Когда нужно закончить? (Срок)</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Кто отвечает за результат? (Ответственный)</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Что поможет в работе: чек-лист, подзадачи?</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Все ли знают об этой задаче? (Соисполнители/Наблюдатели)</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Есть ли приоритет?</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Все ли комментарии и файлы прикреплены?</li>
                     </ul>
                 </div>
-                <div class="card p-6">
-                    <h3 class="text-2xl font-semibold mb-4">Если ставят тебе:</h3>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Если ставят тебе:</h3>
                     <p class="text-gray-700 mb-4">Прежде чем приступить к задаче, задай себе 4 вопроса:</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li>Что нужно сделать?</li>
-                        <li>Какой конечный результат?</li>
-                        <li>К какому сроку?</li>
-                        <li>Кто за это отвечает?</li>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li><i class="fas fa-question-circle text-blue-500 mr-2"></i>Что нужно сделать?</li>
+                        <li><i class="fas fa-question-circle text-blue-500 mr-2"></i>Какой конечный результат?</li>
+                        <li><i class="fas fa-question-circle text-blue-500 mr-2"></i>К какому сроку?</li>
+                        <li><i class="fas fa-question-circle text-blue-500 mr-2"></i>Кто за это отвечает?</li>
                     </ul>
-                    <p class="text-gray-700 mt-4">Если на любой вопрос нет ответа:</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700">
-                        <li>Ставлю уточняющий комментарий.</li>
-                        <li>Фиксирую договоренности.</li>
-                        <li>Только после этого начинаю выполнение.</li>
+                    <p class="text-gray-700 mt-6">Если на любой вопрос нет ответа:</p>
+                    <ul class="list-disc list-inside space-y-3 text-gray-700">
+                        <li><i class="fas fa-comment-dots text-yellow-500 mr-2"></i>Ставлю уточняющий комментарий.</li>
+                        <li><i class="fas fa-handshake text-yellow-500 mr-2"></i>Фиксирую договоренности.</li>
+                        <li><i class="fas fa-play-circle text-yellow-500 mr-2"></i>Только после этого начинаю выполнение.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Section: Инструменты -->
-        <section id="tools" class="mb-16">
-            <h2 class="text-4xl font-extrabold text-center mb-10 text-gray-900">Инструменты для эффективной работы</h2>
+        <!-- Section: Памятка: Что делать, если задачу поставили неправильно? -->
+        <section id="incorrect_task" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Памятка: Что делать, если задачу поставили неправильно?</h2>
+            <div class="card p-8">
+                <p class="text-gray-700 mb-6 text-lg">Следуйте этим шагам, если задача сформулирована некорректно.</p>
+                <ul class="list-none space-y-6 text-gray-700">
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 mr-4 text-indigo-600 text-2xl font-bold">1.</span>
+                        <div>
+                            <strong class="text-gray-900 text-xl">Не выполнять вслепую.</strong><br>
+                            Если в задаче нет понятной формулировки, КР или срока — не приступай к выполнению без уточнений.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 mr-4 text-indigo-600 text-2xl font-bold">2.</span>
+                        <div>
+                            <strong class="text-gray-900 text-xl">Переспроси постановщика.</strong><br>
+                            Задай вопросы:
+                            <ul class="list-disc list-inside ml-6 mt-2 space-y-1">
+                                <li>Что конкретно нужно сделать?</li>
+                                <li>Какой конечный результат ждёт постановщик?</li>
+                                <li>К какому сроку это нужно?</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 mr-4 text-indigo-600 text-2xl font-bold">3.</span>
+                        <div>
+                            <strong class="text-gray-900 text-xl">Предложи корректную формулировку.</strong><br>
+                            Можно сразу написать в комментарии: "Я уточнил бы формулировку: сделать конечный результат срок. Правильно ли я понял?"
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 mr-4 text-indigo-600 text-2xl font-bold">4.</span>
+                        <div>
+                            <strong class="text-gray-900 text-xl">Зафиксируй результат переписки.</strong><br>
+                            Когда постановщик подтвердил, обнови описание задачи или зафиксируй уточнённую формулировку в комментарии.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 mr-4 text-indigo-600 text-2xl font-bold">5.</span>
+                        <div>
+                            <strong class="text-gray-900 text-xl">Если реакции нет — сообщи руководителю.</strong><br>
+                            Если задача осталась непонятной, а постановщик не отвечает — сообщи руководителю или поставь наблюдателем.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 mr-4 text-indigo-600 text-2xl font-bold">6.</span>
+                        <div>
+                            <strong class="text-gray-900 text-xl">Не бойся проявлять инициативу.</strong><br>
+                            Корректно уточнять задачу это не спор, а профессиональная позиция.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
 
-            <div class="card p-6 mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Золотой стандарт постановки задачи</h3>
-                <div class="grid md:grid-cols-2 gap-4 text-gray-700">
-                    <div>☑ <strong class="text-gray-900">ЧТО</strong> сделать?</div>
-                    <div>☑ <strong class="text-gray-900">КОНЕЧНЫЙ РЕЗУЛЬТАТ (КР)</strong></div>
-                    <div>☑ <strong class="text-gray-900">СРОК</strong> выполнения</div>
-                    <div>☑ <strong class="text-gray-900">ОТВЕТСТВЕННЫЙ</strong></div>
-                    <div>☑ <strong class="text-gray-900">ПРИОРИТЕТ</strong> (если критично)</div>
-                    <div>☑ <strong class="text-gray-900">КОММЕНТАРИИ + файлы</strong></div>
+        <!-- Section: Мини-гайд: "Проверка задачи за 60 секунд" -->
+        <section id="quick_check" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Мини-гайд: "Проверка задачи за 60 секунд"</h2>
+            <div class="card p-8 bg-indigo-50 border-indigo-200">
+                <p class="text-gray-800 mb-6 text-xl font-medium text-center">Перед тем как приступить к задаче, задай себе 4 вопроса:</p>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-question-circle text-indigo-600 text-2xl"></i>
+                        <span class="text-lg text-gray-700">1. Что нужно сделать?</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-question-circle text-indigo-600 text-2xl"></i>
+                        <span class="text-lg text-gray-700">2. Какой конечный результат?</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-question-circle text-indigo-600 text-2xl"></i>
+                        <span class="text-lg text-gray-700">3. К какому сроку?</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-question-circle text-indigo-600 text-2xl"></i>
+                        <span class="text-lg text-gray-700">4. Кто за это отвечает?</span>
+                    </div>
                 </div>
-                <p class="text-lg font-bold text-gray-900 mt-6">Формула идеальной задачи: Действие + КР + Срок + Ответственный + Приоритет</p>
+                <p class="text-gray-800 mb-4 text-xl font-medium text-center">Если на любой вопрос нет ответа:</p>
+                <ul class="list-none space-y-3 text-gray-700 text-center">
+                    <li class="flex items-center justify-center space-x-3">
+                        <i class="fas fa-comment-dots text-yellow-600 text-xl"></i>
+                        <span class="text-lg">Ставлю уточняющий комментарий</span>
+                    </li>
+                    <li class="flex items-center justify-center space-x-3">
+                        <i class="fas fa-handshake text-yellow-600 text-xl"></i>
+                        <span class="text-lg">Фиксирую договоренности</span>
+                    </li>
+                    <li class="flex items-center justify-center space-x-3">
+                        <i class="fas fa-play-circle text-yellow-600 text-xl"></i>
+                        <span class="text-lg">Только после этого начинаю выполнение.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section: Инструменты -->
+        <section id="tools" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Инструменты для эффективной работы</h2>
+
+            <div class="card p-8 mb-12 bg-yellow-50 border-yellow-200">
+                <h3 class="text-3xl font-bold mb-6 text-gray-900 text-center">Золотой стандарт постановки задачи</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-gray-700 text-lg">
+                    <div class="flex items-center space-x-3"><i class="fas fa-check-square text-green-600 text-xl"></i><strong class="text-gray-900">ЧТО</strong> сделать?</div>
+                    <div class="flex items-center space-x-3"><i class="fas fa-check-square text-green-600 text-xl"></i><strong class="text-gray-900">КОНЕЧНЫЙ РЕЗУЛЬТАТ (КР)</strong></div>
+                    <div class="flex items-center space-x-3"><i class="fas fa-check-square text-green-600 text-xl"></i><strong class="text-gray-900">СРОК</strong> выполнения</div>
+                    <div class="flex items-center space-x-3"><i class="fas fa-check-square text-green-600 text-xl"></i><strong class="text-gray-900">ОТВЕТСТВЕННЫЙ</strong></div>
+                    <div class="flex items-center space-x-3"><i class="fas fa-check-square text-green-600 text-xl"></i><strong class="text-gray-900">ПРИОРИТЕТ</strong> (если критично)</div>
+                    <div class="flex items-center space-x-3"><i class="fas fa-check-square text-green-600 text-xl"></i><strong class="text-gray-900">КОММЕНТАРИИ + файлы</strong></div>
+                </div>
+                <p class="text-2xl font-extrabold text-indigo-700 mt-10 text-center">
+                    Формула идеальной задачи: Действие + КР + Срок + Ответственный + Приоритет
+                </p>
             </div>
 
-            <div class="card p-6">
-                <h3 class="text-2xl font-semibold mb-4">Список фраз для комментариев в задачах</h3>
-                <div class="space-y-6">
+            <div class="card p-8">
+                <h3 class="text-3xl font-bold mb-6 text-gray-900 text-center">Список фраз для комментариев в задачах</h3>
+                <div class="space-y-8">
                     <div>
-                        <h4 class="font-bold text-lg mb-2">Для уточнения задачи:</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase1" class="flex-grow text-gray-700">Правильно ли я понял, что конечный результат ...?</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase1">Копировать</button>
+                        <h4 class="font-bold text-xl mb-4 text-gray-800">Для уточнения задачи:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase1" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Правильно ли я понял, что конечный результат ...?</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase2" class="flex-grow text-gray-700">Подтвердите, пожалуйста, срок выполнения: ...</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase2">Копировать</button>
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase2" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Подтвердите, пожалуйста, срок выполнения: ...</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase3" class="flex-grow text-gray-700">Какой формат результата вам удобнее: файл, таблица, ссылка?</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase3">Копировать</button>
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase3" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Какой формат результата вам удобнее: файл, таблица, ссылка?</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 class="font-bold text-lg mb-2">Для промежуточного отчёта:</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase4" class="flex-grow text-gray-700">На текущий момент выполнено... Прикладываю промежуточный файл.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase4">Копировать</button>
+                        <h4 class="font-bold text-xl mb-4 text-gray-800">Для промежуточного отчёта:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase4" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">На текущий момент выполнено... Прикладываю промежуточный файл.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase5" class="flex-grow text-gray-700">Есть прогресс по задаче: ... Продолжаю работу.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase5">Копировать</button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-lg mb-2">При запросе продления срока:</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase6" class="flex-grow text-gray-700">Прошу согласовать перенос срока на ... по причине ...</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase6">Копировать</button>
-                            </li>
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase7" class="flex-grow text-gray-700">Столкнулся с уточняющими моментами, потребуется дополнительно ... дней.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase7">Копировать</button>
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase5" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Есть прогресс по задаче: ... Продолжаю работу.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 class="font-bold text-lg mb-2">Для закрытия задачи:</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase8" class="flex-grow text-gray-700">Конечный результат достигнут: прикладываю файл/ссылку. Завершаю задачу.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase8">Копировать</button>
+                        <h4 class="font-bold text-xl mb-4 text-gray-800">При запросе продления срока:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase6" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Прошу согласовать перенос срока на ... по причине ...</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase9" class="flex-grow text-gray-700">Проверьте, пожалуйста, результат. Если всё в порядке — закрываю задачу.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase9">Копировать</button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-lg mb-2">При делегировании:</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase10" class="flex-grow text-gray-700">Передаю задачу Коллеге, так как ... Все детали передал.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase10">Копировать</button>
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase7" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Столкнулся с уточняющими моментами, потребуется дополнительно ... дней.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 class="font-bold text-lg mb-2">Если задача поставлена некорректно:</h4>
-                        <ul class="space-y-2">
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase11" class="flex-grow text-gray-700">Формулировка задачи не полная. Для корректного выполнения мне нужно понять: ...</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase11">Копировать</button>
+                        <h4 class="font-bold text-xl mb-4 text-gray-800">Для закрытия задачи:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase8" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Конечный результат достигнут: прикладываю файл/ссылку. Завершаю задачу.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
-                            <li class="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200">
-                                <span id="phrase12" class="flex-grow text-gray-700">Прошу уточнить КР и дедлайн, пока это не ясно.</span>
-                                <button class="copy-button ml-4 px-4 py-2 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700" data-target="phrase12">Копировать</button>
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase9" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Проверьте, пожалуйста, результат. Если всё в порядке — закрываю задачу.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-xl mb-4 text-gray-800">При делегировании:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase10" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Передаю задачу Коллеге, так как ... Все детали передал.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-xl mb-4 text-gray-800">Если задача поставлена некорректно:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase11" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Формулировка задачи не полная. Для корректного выполнения мне нужно понять: ...</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
+                            </li>
+                            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <span id="phrase12" class="flex-grow text-gray-700 text-lg mb-2 sm:mb-0">Прошу уточнить КР и дедлайн, пока это не ясно.</span>
+                                <button class="copy-button px-6 py-2 rounded-full text-sm font-semibold">Копировать <i class="fas fa-copy ml-1"></i></button>
                             </li>
                         </ul>
                     </div>
@@ -435,9 +623,10 @@
 
     </main>
 
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-gray-900 text-white py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2024 Памятка по работе с задачами. Все права защищены.</p>
+            <p class="text-gray-400">&copy; 2024 Памятка по работе с задачами. Все права защищены.</p>
+            <p class="text-gray-500 text-sm mt-2">Разработано с заботой о вашей продуктивности.</p>
         </div>
     </footer>
 
@@ -477,8 +666,8 @@
 
         const observerOptions = {
             root: null,
-            rootMargin: '0px',
-            threshold: 0.7 // Adjust as needed
+            rootMargin: '-20% 0px -80% 0px', // Adjust rootMargin to make links active when section is more visible
+            threshold: 0 // No threshold needed with rootMargin
         };
 
         const sectionObserver = new IntersectionObserver((entries, observer) => {
@@ -536,9 +725,11 @@
                 if (content.classList.contains('hidden')) {
                     content.classList.remove('hidden');
                     content.style.maxHeight = content.scrollHeight + 'px'; // For smooth transition
+                    content.style.overflow = 'visible'; // Ensure content is visible during transition
                 } else {
                     content.style.maxHeight = null; // Reset max-height
                     content.classList.add('hidden');
+                    content.style.overflow = 'hidden';
                 }
             });
         });
@@ -558,7 +749,7 @@
                     document.execCommand('copy');
                     this.textContent = 'Скопировано!';
                     setTimeout(() => {
-                        this.textContent = 'Копировать';
+                        this.innerHTML = 'Копировать <i class="fas fa-copy ml-1"></i>';
                     }, 2000);
                 } catch (err) {
                     console.error('Не удалось скопировать текст: ', err);
