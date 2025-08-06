@@ -126,6 +126,68 @@
             opacity: 0;
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
         }
+
+        /* Test specific styles */
+        .question-block {
+            background-color: #f0f4f8; /* Light blue-gray background */
+            border-left: 4px solid #4F46E5; /* Indigo border */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #1F2937;
+            margin-bottom: 1rem;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 0.5rem;
+        }
+        .option-label:hover {
+            background-color: #e0e7f0;
+        }
+        .option-label input[type="radio"] {
+            margin-right: 0.75rem;
+            transform: scale(1.2);
+            accent-color: #4F46E5; /* Indigo radio button */
+        }
+        .feedback-correct {
+            color: #10B981; /* Green-500 */
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .feedback-incorrect {
+            color: #EF4444; /* Red-500 */
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .results-area {
+            background-color: #ECFDF5; /* Light green background */
+            border: 1px solid #A7F3D0; /* Green border */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #065F46; /* Dark green text */
+        }
+        .reset-button {
+            background-color: #EF4444; /* Red-500 */
+            color: #FFFFFF;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .reset-button:hover {
+            background-color: #DC2626; /* Red-600 */
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -144,6 +206,7 @@
                     <a href="#memo" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Памятка</a>
                     <a href="#incorrect_task" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Некорректная задача</a>
                     <a href="#tools" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Инструменты</a>
+                    <a href="#self-check" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg">Самопроверка</a>
                 </nav>
                 <!-- Mobile Menu Button -->
                 <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md p-2">
@@ -159,6 +222,7 @@
             <a href="#memo" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg py-2 w-full text-center">Памятка</a>
             <a href="#incorrect_task" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg py-2 w-full text-center">Некорректная задача</a>
             <a href="#tools" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg py-2 w-full text-center">Инструменты</a>
+            <a href="#self-check" class="nav-link text-gray-700 hover:text-indigo-700 font-semibold text-lg py-2 w-full text-center">Самопроверка</a>
         </nav>
     </header>
 
@@ -648,6 +712,92 @@
             </div>
         </section>
 
+        <!-- Section: Self-Check Test -->
+        <section id="self-check" class="mb-24">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Тест для самопроверки</h2>
+            <div class="card p-8">
+                <form id="quiz-form">
+                    <!-- Question 1 -->
+                    <div class="question-block">
+                        <p class="question-text">1. Какой из этих элементов НЕ является обязательным для корректной постановки задачи?</p>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="a"> а) Конечный Результат (КР)
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="b"> б) Дедлайн
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="c"> в) Соисполнители
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q1" value="d"> г) Ответственный
+                        </label>
+                        <div id="q1-feedback" class="feedback-message hidden"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-block">
+                        <p class="question-text">2. Что означает "КР" в контексте постановки задачи?</p>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="a"> а) Краткий Резюме
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="b"> б) Конечный Результат
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="c"> в) Ключевые Ресурсы
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q2" value="d"> г) Контрольный Расчет
+                        </label>
+                        <div id="q2-feedback" class="feedback-message hidden"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-block">
+                        <p class="question-text">3. Если задача поставлена без дедлайна, что следует сделать?</p>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="a"> а) Начать выполнение и установить дедлайн самостоятельно.
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="b"> б) Отказаться от выполнения задачи.
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="c"> в) Уточнить дедлайн у постановщика в комментариях.
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q3" value="d"> г) Сообщить руководителю о некорректной задаче.
+                        </label>
+                        <div id="q3-feedback" class="feedback-message hidden"></div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-block">
+                        <p class="question-text">4. Какое действие является наиболее эффективным при получении некорректно сформулированной задачи?</p>
+                        <label class="option-label">
+                            <input type="radio" name="q4" value="a"> а) Выполнить задачу, как понял.
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q4" value="b"> б) Немедленно сообщить руководителю о проблеме.
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q4" value="c"> в) Уточнить все необходимые детали у постановщика, зафиксировать договоренности и только потом приступить к выполнению.
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="q4" value="d"> г) Отложить задачу до тех пор, пока постановщик сам не уточнит детали.
+                        </label>
+                        <div id="q4-feedback" class="feedback-message hidden"></div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+                        <button type="submit" class="copy-button px-8 py-3 rounded-full font-bold text-lg">Проверить ответы</button>
+                        <button type="button" id="reset-quiz" class="reset-button px-8 py-3 rounded-full font-bold text-lg">Сбросить тест</button>
+                    </div>
+                </form>
+                <div id="quiz-results" class="results-area hidden"></div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-gray-900 text-white py-10">
@@ -802,6 +952,66 @@
 
         mobileMenuButton.addEventListener('click', () => {
             mobileNav.classList.toggle('open');
+        });
+
+        // Self-check Quiz Logic
+        const quizForm = document.getElementById('quiz-form');
+        const quizResults = document.getElementById('quiz-results');
+        const resetButton = document.getElementById('reset-quiz');
+
+        const correctAnswers = {
+            q1: 'c',
+            q2: 'b',
+            q3: 'c',
+            q4: 'c' // Added correct answer for the new question
+        };
+
+        quizForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+
+            // Clear previous feedback
+            document.querySelectorAll('.feedback-message').forEach(feedbackDiv => {
+                feedbackDiv.classList.add('hidden');
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-incorrect');
+                feedbackDiv.textContent = '';
+            });
+
+            for (const questionName in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                const feedbackDiv = document.getElementById(`${questionName}-feedback`);
+
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswers[questionName]) {
+                        score++;
+                        feedbackDiv.textContent = 'Верно!';
+                        feedbackDiv.classList.add('feedback-correct');
+                    } else {
+                        feedbackDiv.textContent = `Неверно. Правильный ответ: ${correctAnswers[questionName].toUpperCase()})`;
+                        feedbackDiv.classList.add('feedback-incorrect');
+                    }
+                } else {
+                    feedbackDiv.textContent = 'Вы не выбрали ответ.';
+                    feedbackDiv.classList.add('feedback-incorrect');
+                }
+                feedbackDiv.classList.remove('hidden');
+            }
+
+            quizResults.innerHTML = `Вы набрали ${score} из ${totalQuestions} баллов.`;
+            quizResults.classList.remove('hidden');
+            quizResults.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        resetButton.addEventListener('click', function() {
+            quizForm.reset(); // Resets all form fields
+            quizResults.classList.add('hidden'); // Hide results
+            // Clear all feedback messages
+            document.querySelectorAll('.feedback-message').forEach(feedbackDiv => {
+                feedbackDiv.classList.add('hidden');
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-incorrect');
+                feedbackDiv.textContent = '';
+            });
         });
     </script>
 </body>
